@@ -1,1 +1,10 @@
+# Environment
 env
+
+# PYC files
+*.pyc
+
+# Config files
+app_config.py
+
+#Others
