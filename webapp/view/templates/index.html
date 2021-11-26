@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<HEAD>
+   <TITLE>HANGMAN!</TITLE>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</HEAD>
+
+<BODY>
+   <P>Welcome!</P>
+   <div>
+      <button id="new_game">NEW GAME</button>
+      <div id="div_word">
+         <label id="label_word">(PLEASE START A NEW GAME)</label>
+      </div>
+      <div>
+         <p>
+            Letter:<input type="text" id="your_guess" style="width: 1rem">
+            <button id="check_word">CHECK!</button>
+         </p>
+      </div>
+      <div id="error_div" hidden>
+         <label>ERROR:</label><label id="error_label">(no error)</label>
+      </div>
+      <div>
+         <canvas id="canvas1" width="400px" height="300px">
+            Your browser does not support HTML5 Canvas element
+         </canvas>
+      </div>
+</BODY>
+
+</HTML>
+
+<script>
+
+   $('#new_game').on('click', function (e) {
+      start_new_game();
+   });
+
+   $('#check_word').on('click', function (e) {
+      letter = $("#your_guess").val();
+      check_letter(letter);
+   });
+
+   function ask_new_game() {
+      var x = confirm("Start a new game?");
+      if (x) {
+         start_new_game();
+      }
+      else
+         return false;
+   }
+
+   function start_new_game() {
+      to_url = "game/new";
+      $.post(
+         to_url,
+         function (data) {
+            console.log(data);
+
+            if (data.error == null) {
+               guesses = data.status.guesses;
+               word_length = data.status.word_length;
+               fill_word(word_length, guesses);
+               draw_hangman(data.status.incorrect_guesses)
+               console.log("INCO:" + data.status.incorrect_guesses);
+            }
+            else {
+               alert(data.error)
+            }
+
+         });
+   }
+
+   function check_letter(letter) {
+      to_url = "/game/check-letter/{0}".replace('{0}', letter);
+      $.post(
+         to_url,
+         function (data) {
+            console.log(data);
+
+            if (data.error == null) {
+               guesses = data.status.guesses;
+               word_length = data.status.word_length;
+               fill_word(word_length, guesses);
+
+               if (data.status.game_state == "won")
+                  alert("CONGRATS YOU WON!");
+               else if (data.status.game_state == "lost") {
+                  alert("Im Sorry, this person died because of you");
+               }
+               draw_hangman(data.status.incorrect_guesses)
+            }
+            show_error(data.error);
+         });
+   }
+
+   function fill_word(word_length, guesses) {
+      label = $("#label_word")
+
+      var text = "";
+      var text_array = []
+
+      for (i = 0; i < word_length; i++) {
+         text_array[i] = "_ ";
+      }
+
+      $.each(guesses, function (k, v) {
+         for (i = 0; i < v.length; i++) {
+            text_array[v[i]] = k + " ";
+         }
+      });
+
+      for (i = 0; i < word_length; i++) {
+         text += text_array[i];
+      }
+      label.text(text)
+   }
+
+   function show_error(msg) {
+
+      div_error = $("#error_div");
+      label_error = $("#error_label");
+
+      if (msg == null)
+         div_error.hide();
+      else {
+         label_error.text(msg);
+         div_error.show();
+      }
+
+   }
+
+   function draw_hangman(body_parts) {
+      
+
+      var canvas = document.getElementById("canvas1");
+      if (canvas.getContext("2d")) { // Check HTML5 canvas support
+         context = canvas.getContext("2d"); // get Canvas Context object
+
+         if (body_parts == 0)
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+         if (body_parts >= 1) {
+            context.beginPath();
+            context.fillStyle = "bisque"; // #ffe4c4
+            context.arc(200, 50, 30, 0, Math.PI * 2, true); // draw circle for head
+            // (x,y) center, radius, start angle, end angle, anticlockwise
+            context.fill();
+         }
+
+         if (body_parts >= 2) {
+            context.beginPath();
+            context.strokeStyle = "red"; // color
+            context.lineWidth = 3;
+            context.arc(200, 50, 20, 0, Math.PI, false); // draw semicircle for smiling
+            context.stroke();
+         }
+
+         // eyes
+         if (body_parts >= 3 && body_parts < 10) {
+            context.beginPath();
+            context.fillStyle = "green"; // color
+            context.arc(210, 45, 3, 0, Math.PI * 2, true); // draw right eye
+            context.fill();
+         }
+
+         if (body_parts >= 4 && body_parts < 10) {
+            context.beginPath();
+            context.fillStyle = "green"; // color
+            context.arc(190, 45, 3, 0, Math.PI * 2, true); // draw left eye
+            context.fill();
+         }
+
+         // body
+         if (body_parts >= 5) {
+            context.beginPath();
+            context.moveTo(200, 80);
+            context.lineTo(200, 180);
+            context.strokeStyle = "navy";
+            context.stroke();
+         }
+
+         // arms
+         if (body_parts >= 6) {
+            context.beginPath();
+            context.strokeStyle = "#0000ff"; // blue
+            context.moveTo(200, 80);
+            context.lineTo(250, 130);
+            context.stroke();
+         }
+
+         if (body_parts >= 7) {
+            context.beginPath();
+            context.strokeStyle = "#0000ff"; // blue
+            context.moveTo(200, 80);
+            context.lineTo(150, 130);
+            context.stroke();
+
+         }
+
+         // legs
+         if (body_parts >= 8) {
+            context.beginPath();
+            context.strokeStyle = "orange";
+            context.moveTo(200, 180);
+            context.lineTo(250, 280);
+            context.stroke();
+         }
+
+         if (body_parts >= 9) {
+            context.beginPath();
+            context.strokeStyle = "orange";
+            context.moveTo(200, 180);
+            context.lineTo(150, 280);
+            context.stroke();
+         }
+
+         if (body_parts >= 10) {
+            context.beginPath();
+            context.strokeStyle = "brown";
+            context.moveTo(200, 0);
+            context.lineTo(200, 20);
+            context.moveTo(0, 0);
+            context.lineTo(200, 0);
+            context.moveTo(0, 0);
+            context.lineTo(0, 550);
+            context.stroke();
+            context.strokeStyle = "black";
+            context.moveTo(0, 550);
+            context.lineTo(300, 550);
+            context.stroke();
+
+            context.moveTo(210, 45);
+            context.lineTo(215, 50);
+            context.moveTo(215, 45);
+            context.lineTo(210, 50);
+
+            context.moveTo(190, 45);
+            context.lineTo(195, 50);
+            context.moveTo(195, 45);
+            context.lineTo(190, 50);
+            context.stroke();
+
+         }
+      }
+   }
+
+</script>
