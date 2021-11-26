@@ -8,8 +8,14 @@
 </HEAD>
 
 <BODY>
-   <P>Welcome!</P>
+   <h1>Welcome 2 HANGMAN!</h1>
    <div>
+      <h3>YOUR STATS:</h3>
+      <p>WON GAMES: <label id="label_won">Nothing yet!</label></p>
+      <p>LOST GAMES: <label id="label_lost">Nothing yet!</label></p>
+   </div>
+   <div>
+      <h3>CURRENT GAME:</h3>
       <button id="new_game">NEW GAME</button>
       <div id="div_word">
          <label id="label_word">(PLEASE START A NEW GAME)</label>
@@ -57,14 +63,13 @@
       $.post(
          to_url,
          function (data) {
-            console.log(data);
 
             if (data.error == null) {
                guesses = data.status.guesses;
                word_length = data.status.word_length;
+
                fill_word(word_length, guesses);
                draw_hangman(data.status.incorrect_guesses)
-               console.log("INCO:" + data.status.incorrect_guesses);
             }
             else {
                alert(data.error)
@@ -79,16 +84,18 @@
          to_url,
          function (data) {
             console.log(data);
-
             if (data.error == null) {
                guesses = data.status.guesses;
                word_length = data.status.word_length;
                fill_word(word_length, guesses);
 
-               if (data.status.game_state == "won")
+               if (data.status.game_state == "won") {
                   alert("CONGRATS YOU WON!");
+                  update_stats(data.stats);
+               }
                else if (data.status.game_state == "lost") {
                   alert("Im Sorry, this person died because of you");
+                  update_stats(data.stats);
                }
                draw_hangman(data.status.incorrect_guesses)
             }
@@ -133,7 +140,7 @@
    }
 
    function draw_hangman(body_parts) {
-      
+
 
       var canvas = document.getElementById("canvas1");
       if (canvas.getContext("2d")) { // Check HTML5 canvas support
@@ -245,6 +252,11 @@
 
          }
       }
+   }
+
+   function update_stats(stats) {
+      $('#label_won').text(stats.won);
+      $('#label_lost').text(stats.lost);
    }
 
 </script>

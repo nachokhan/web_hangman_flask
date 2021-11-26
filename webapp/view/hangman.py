@@ -19,6 +19,15 @@ def get_game_status():
     return game_status
 
 
+def get_game_stats():
+    game_stats = {
+        "won": session['won_games'],
+        "lost": session['lost_games']
+    }
+
+    return game_stats
+
+
 @bp_hangman.route("/game/new", methods=['POST'])
 def new_game():
     error = None
@@ -28,15 +37,14 @@ def new_game():
     session['word_length'] = len(session['guessing_word'])
     session['remaining_letters'] = len(session['guessing_word'])
     session['incorrect_guesses'] = 0
-    session['remaining_guesses'] = 0
-    session['correct_guesses'] = 0
     session['correct_letters'] = []
     session['incorrect_letters'] = []
     session['game_state'] = "in_progress"
 
     status = get_game_status()
+    stats = get_game_stats()
 
-    return {"status": status, "error": error}
+    return {"status": status, "stats": stats,  "error": error}
 
 
 @bp_hangman.route("/game/check-letter/<string:letter>", methods=['POST'])
@@ -44,7 +52,6 @@ def word_contains_letter(letter: str):
 
     error = None
     indexes = None
-    contains = False
 
     letter = letter.lower()
 
@@ -72,21 +79,20 @@ def word_contains_letter(letter: str):
         indexes = hangman_controller.get_all_ocurrences(word, letter)
 
         if indexes:
-            contains = True
             session['guesses'][letter] = indexes
-            session['correct_guesses'] += 1
             session['correct_letters'].append(letter)
             session['remaining_letters'] -= len(indexes)
             if session['remaining_letters'] <= 0:
                 session['game_state'] = "won"
+                session['won_games'] += 1
         else:
-            contains = False
             session['incorrect_guesses'] += 1
             session['incorrect_letters'].append(letter)
-            session['remaining_guesses'] += 1
-            if session['remaining_guesses'] >= 10:
+            if session['incorrect_guesses'] >= 10:
                 session['game_state'] = "lost"
+                session['lost_games'] += 1
 
     status = get_game_status()
+    stats = get_game_stats()
 
-    return {"word": word, "contains": contains, "indexes": indexes, "status": status, "error": error}
+    return {"status": status, "stats": stats,  "error": error}
