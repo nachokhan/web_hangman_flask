@@ -1,6 +1,4 @@
 from flask import Blueprint
-from flask import session
-
 import webapp.controller.hangman as hangman_controller
 import webapp.controller.stats as stats_controller
 
@@ -27,7 +25,7 @@ def word_contains_letter(letter: str):
 
     if not error:
         error = hangman_controller.is_valid_letter(letter)
-    
+
     if not error:
         error = hangman_controller.is_valid_word()
 

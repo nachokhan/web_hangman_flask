@@ -1,4 +1,3 @@
-from os import MFD_HUGE_SHIFT
 from flask import Blueprint
 
 import webapp.controller.stats as stats_controller
