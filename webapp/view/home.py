@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session
 
+import webapp.controller.stats as stats_controller
 
 bp_home = Blueprint(
     "Home",
@@ -11,9 +12,6 @@ bp_home = Blueprint(
 @bp_home.route("/")
 def index():
 
-    if 'won_games' not in session:
-        session['won_games'] = 0
-    if 'lost_games' not in session:
-        session['lost_games'] = 0
+    stats_controller.reset_stats()
 
     return render_template("index.html")
