@@ -2,31 +2,10 @@ from flask import Blueprint
 from flask import session
 
 import webapp.controller.hangman as hangman_controller
+import webapp.controller.stats as stats_controller
 
 
 bp_hangman = Blueprint("Hangman", __name__)
-
-
-def get_game_status():
-    game_status = {
-        # "word": session['guessing_word'],
-        "incorrect_guesses": session['incorrect_guesses'],
-        "game_state": session['game_state'],
-        "word_length": session['word_length'],
-        "guesses": session['guesses'],
-    }
-
-    return game_status
-
-
-def get_game_stats():
-    game_stats = {
-        "won": session['won_games'],
-        "lost": session['lost_games']
-    }
-
-    return game_stats
-
 
 @bp_hangman.route("/game/new", methods=['POST'])
 def new_game():
@@ -41,8 +20,8 @@ def new_game():
     session['incorrect_letters'] = []
     session['game_state'] = "in_progress"
 
-    status = get_game_status()
-    stats = get_game_stats()
+    status = hangman_controller.get_game_status()
+    stats = stats_controller.get_game_stats()
 
     return {"status": status, "stats": stats,  "error": error}
 
@@ -92,7 +71,7 @@ def word_contains_letter(letter: str):
                 session['game_state'] = "lost"
                 session['lost_games'] += 1
 
-    status = get_game_status()
-    stats = get_game_stats()
+    status = hangman_controller.get_game_status()
+    stats = stats_controller.get_game_stats()
 
     return {"status": status, "stats": stats,  "error": error}
