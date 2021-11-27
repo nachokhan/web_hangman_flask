@@ -49,6 +49,15 @@
       check_letter(letter);
    });
 
+   $('#your_guess').keypress(function (e) {
+      var key = e.which;
+      if(key == 13) 
+       {
+         letter = $("#your_guess").val();
+         check_letter(letter);  
+       }
+     });
+
    function ask_new_game() {
       var x = confirm("Start a new game?");
       if (x) {
@@ -101,6 +110,7 @@
             }
             show_error(data.error);
          });
+      $("#your_guess").val('');
    }
 
    function fill_word(word_length, guesses) {
