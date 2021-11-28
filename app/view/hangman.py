@@ -1,6 +1,6 @@
 from flask import Blueprint
-from app.controller import hangman as hangman_controller
-from app.controller import stats as stats_controller
+from ..controller import hangman as hangman_controller
+from ..controller import stats as stats_controller
 
 
 bp_hangman = Blueprint("Hangman", __name__)

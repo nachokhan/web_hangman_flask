@@ -5,6 +5,6 @@ env
 *.pyc
 
 # Config files
-app_config.py
+*config.py
 
 #Others
