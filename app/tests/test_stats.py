@@ -1,4 +1,5 @@
 import pytest
+import json
 from ..hangman import app
 
 
@@ -17,5 +18,20 @@ def client():
 
 
 def test_home(client):
-    rv = client.get("/")
-    assert b"Welcome" in rv.data
+    res = client.get("/")
+    assert res.status_code == 200
+    assert b"Welcome" in res.data
+
+
+def test_reset_stats(client):
+    client.post("/game/stats/reset")
+    res = client.get("/game/stats/")
+    expected = {
+        "won": 0,
+        "lost": 0,
+        "ratio_won": None,
+    }
+    data = json.loads(res.data)
+    assert data == expected
+    assert res.status_code == 200
+
