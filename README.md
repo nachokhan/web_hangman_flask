@@ -13,3 +13,14 @@
  That's all!
 
  TIP: make sure you have installed 'pip'
+
+ ## Testing
+ 1. Install pytest and coverage
+ * pip install pystest coverage
+ 
+ 2. Run pytest
+ * pytest
+
+ MAke sure when you run pytest you are inside /app folder. From root you will face some importing errores.
+
+ 
