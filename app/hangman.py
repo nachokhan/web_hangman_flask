@@ -1,5 +1,5 @@
 from flask import Flask
-from config import APP_SECRET_KEY
+from .config import APP_SECRET_KEY
 
 from .view.home import bp_home
 from .view.hangman import bp_hangman

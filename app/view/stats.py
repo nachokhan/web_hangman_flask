@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from app.controller import stats as stats_controller
+from ..controller import stats as stats_controller
 
 
 bp_stats = Blueprint("Statistics", __name__)
