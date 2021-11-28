@@ -31,6 +31,8 @@ def get_all_ocurrences(word, letter):
 
     index_position = 0
     while True:
+        if letter == '':
+            break
         try:
             next_index = word.index(letter, index_position)
             if next_index not in indexes:

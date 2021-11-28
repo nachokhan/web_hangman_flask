@@ -17,6 +17,7 @@ def get_stats():
     game_stats = {
         "won": games_won,
         "lost": games_lost,
+        "ratio_won": games_won / (games_won+games_lost)
     }
 
     return game_stats

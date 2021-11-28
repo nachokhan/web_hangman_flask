@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, session
-
-import webapp.controller.stats as stats_controller
+from flask import Blueprint, render_template
+from controller import stats as stats_controller
 
 bp_home = Blueprint(
     "Home",
