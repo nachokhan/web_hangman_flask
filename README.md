@@ -3,11 +3,15 @@
 ## Run Hangman App:
 
 1. Clone the repo.
-2. In the command line:
-
-* python3 -m venv env
+2. Run the makefile (to create the app secret key)
+* cd app
+* ./make
+4. Then create the environement:
+* python3 -m venv env 
 * source env/bin/actuvate
+5. Install requirements
 * pip install -r requirements.txt
+6. Finally run the app.
 * flask run
 
  That's all!
