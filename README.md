@@ -1,6 +1,6 @@
 # web_hangman_flask
 
-## Run Hangman:
+## Run Hangman App:
 
 1. Clone the repo.
 2. In the command line:
@@ -15,12 +15,16 @@
  TIP: make sure you have installed 'pip'
 
  ## Testing
- 1. Install pytest and coverage
- * pip install pystest coverage
- 
- 2. Run pytest
+ ### Run pytest
+ 1. Install and run pytest (in the root Ç(not inside /tests)
+ * pip install pystest
  * pytest
 
- MAke sure when you run pytest you are inside /app folder. From root you will face some importing errores.
+ ### Code Coverage
+1. Install and  run coverage
+* pip install coverage
+* coverage run -m pytest
+* coverage report -m
+
 
  
