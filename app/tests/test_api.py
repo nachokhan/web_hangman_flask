@@ -1,5 +1,4 @@
 import pytest
-import json
 from ..hangman import app
 
 
@@ -26,12 +25,12 @@ def test_home(client):
 def test_reset_stats_return_correct_dict(client):
     client.post("/game/stats/reset")
     res = client.get("/game/stats/")
+    data = res.get_json()
     expected = {
         "won": 0,
         "lost": 0,
         "ratio_won": None,
     }
-    data = json.loads(res.data)
     assert data == expected
     assert res.status_code == 200
 
@@ -39,7 +38,7 @@ def test_reset_stats_return_correct_dict(client):
 def test_new_game_has_word_length(client):
     res = client.post("/game/new")
 
-    data = json.loads(res.data)
+    data = res.get_json()
 
     assert "status" in data
     assert "word_length" in data['status']
@@ -49,7 +48,7 @@ def test_new_game_has_word_length(client):
 def test_new_game_returns_correct_dict(client):
     res = client.post("/game/new")
 
-    data = json.loads(res.data)
+    data = res.get_json()
 
     # pick the data as I don't know -yet- how to mock it
     aux_word_length = data['status']['word_length']
@@ -91,7 +90,7 @@ def client_for_loose():
 def test_check_letter(client_for_loose):
     res = client_for_loose.post("/game/check-letter/c")
 
-    data = json.loads(res.data)
+    data = res.get_json()
 
     expected = {
         "status": {
@@ -112,7 +111,7 @@ def test_check_letter(client_for_loose):
 def test_check_letter_lost(client_for_loose):
     res = client_for_loose.post("/game/check-letter/k")
 
-    data = json.loads(res.data)
+    data = res.get_json()
 
     expected = {
         "status": {
@@ -159,7 +158,7 @@ def client_for_win():
 def test_check_letter_win(client_for_win):
     res = client_for_win.post("/game/check-letter/c")
 
-    data = json.loads(res.data)
+    data = res.get_json()
 
     expected = {
         "status": {
