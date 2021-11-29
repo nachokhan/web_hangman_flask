@@ -1,0 +1,6 @@
+# This commands generate a SECRET key for the app!
+# :)
+
+cp config_TEMPLATE.py config.py
+key=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
+sed -i "s|\write_secret_app_key_here|${key}|" config.py
