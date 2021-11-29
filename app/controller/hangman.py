@@ -123,5 +123,7 @@ def is_valid_word():
 
 
 def is_game_in_progress():
+    if 'game_state' not in session:
+        return "If you don't start a new game there is no word to guess!"
     if session['game_state'] != "in_progress":
         return "The game already finished! Start a new game."
