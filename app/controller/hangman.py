@@ -108,6 +108,7 @@ def is_valid_letter(letter):
     if len(letter) > 1:
         return "Should only compare against a single letter"
 
+
 def letter_was_not_used(letter):
     if letter in session['correct_letters']:
         return "That letter was already guessed!"
