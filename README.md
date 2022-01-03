@@ -45,7 +45,7 @@ $ coverage report -m
  ## DOCKER Execution
  ```
  $ sudo docker build -t hangman .
- $ sudo docker run --rm -it -p 8080:5052 hangman
+ $ sudo docker run --rm -it -p 5052:5052 hangman
  ```
 
  That all!
