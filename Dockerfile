@@ -14,6 +14,6 @@ RUN pip install -r requirements.txt
 # Bundle app source
 COPY app /app
 
-EXPOSE 8080
+EXPOSE 5052
 
 CMD [ "env", "FLASK_APP=hangman.py", "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=5052"]
