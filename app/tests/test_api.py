@@ -105,7 +105,7 @@ def test_check_letter(client_for_loose):
     }
 
     assert data == expected
-    assert res.status_code == 999
+    assert res.status_code == 200
 
 
 def test_check_letter_lost(client_for_loose):
