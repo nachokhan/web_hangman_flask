@@ -1,7 +1,14 @@
+"""
+TODO
+"""
+
 from flask import session
 
 
 def reset_stats():
+    """
+    TODO
+    """
     if 'won_games' not in session:
         session['won_games'] = 0
     if 'lost_games' not in session:

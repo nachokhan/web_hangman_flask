@@ -1,3 +1,6 @@
+"""
+VIEW: HANGMAN
+"""
 from flask import Blueprint
 from ..controller import hangman as hangman_controller
 from ..controller import stats as stats_controller
@@ -7,7 +10,9 @@ bp_hangman = Blueprint("Hangman", __name__)
 
 @bp_hangman.route("/game/new", methods=['POST'])
 def new_game():
-
+    """
+    TODO
+    """
     hangman_controller.init_new_game()
     status = hangman_controller.get_game_status()
     return {"status": status}
@@ -15,7 +20,9 @@ def new_game():
 
 @bp_hangman.route("/game/check-letter/<string:letter>", methods=['POST'])
 def word_contains_letter(letter: str):
-
+    """
+    TODO
+    """
     error = None
 
     letter = letter.lower()
@@ -42,5 +49,8 @@ def word_contains_letter(letter: str):
 
 @bp_hangman.route("/game/status", methods=['GET'])
 def get_status():
+    """
+    TODO
+    """
     stats = stats_controller.get_stats()
     return {"stats": stats}

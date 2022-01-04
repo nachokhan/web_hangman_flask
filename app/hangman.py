@@ -1,3 +1,6 @@
+"""
+TODO
+"""
 from flask import Flask
 from .config import APP_SECRET_KEY
 
